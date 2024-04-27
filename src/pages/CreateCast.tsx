@@ -1,0 +1,64 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const CreateCast: React.FC = () => {
+  const [name, setName] = useState<string>('');
+  const [image, setImage] = useState<File | null>(null);
+  const [error, setError] = useState<string>('');
+
+  const storedToken = localStorage.getItem('token');
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setImage(files[0]);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/create-cast/',
+        formData,
+        {
+          headers: {
+            Authorization: `Token ${storedToken}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      console.log('Cast created:', response.data);
+    } catch (error) {
+      console.error('Error creating cast:', error);
+      setError('Error creating cast. Please try again.');
+    }
+  };
+
+  return (
+    <div>
+      <h2>Create Cast</h2>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        </label>
+        <label>
+          Image:
+          <input type="file" onChange={handleImageChange} />
+        </label>
+        <button type="submit">Create</button>
+      </form>
+    </div>
+  );
+};
+
+export default CreateCast;
