@@ -33,6 +33,7 @@ const RegistrationForm: React.FC = () => {
     state: "",
     profile_picture: null,
   });
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -59,7 +60,7 @@ const RegistrationForm: React.FC = () => {
     }
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/register/",
+        `${apiUrl}/register/`,
         formDataToSend,
         {
           headers: {
