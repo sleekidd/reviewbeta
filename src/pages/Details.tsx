@@ -31,7 +31,9 @@ const Detail: React.FC = () => {
 
         // Fetch category title
         const categoryId = itemResponse.data.category;
-        const categoryResponse = await axios.get(`${apiUrl}/category-list/${categoryId}/`);
+        const categoryResponse = await axios.get(
+          `${apiUrl}/category-list/${categoryId}/`
+        );
         setCategoryTitle(categoryResponse.data.name);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -153,7 +155,7 @@ const Detail: React.FC = () => {
               </div>
             </li>
             <li aria-current="page">
-              <div className="flex items-center">
+             <div className="flex items-center">
                 <svg
                   className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
                   aria-hidden="true"
@@ -482,7 +484,7 @@ const Detail: React.FC = () => {
                       <div className="flex items-center mb-4">
                         <img
                           className="w-10 h-10 me-4 rounded-full"
-                          src={`http://127.0.0.1:8000/${review.profile_picture}`}
+                          src={`${apiUrl}/${review.profile_picture}`}
                           alt=""
                         />
                         <div className="font-medium dark:text-white">
