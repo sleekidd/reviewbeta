@@ -8,12 +8,13 @@ interface Category {
 
 const CategorySection: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/category-list/"
+          `${apiUrl}/category-list/`
         );
         // Assuming the response data is an array of category objects with 'name' and 'background_image' fields
         const fetchedCategories = response.data.map((category: any) => ({
