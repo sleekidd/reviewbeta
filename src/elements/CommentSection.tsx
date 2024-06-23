@@ -86,7 +86,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ movieId }) => {
       }
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/items/${movieId}/reviews/create/`,
+        `${apiUrl}/items/${movieId}/reviews/create/`,
         {
           item: movieId,
           user: userId,
