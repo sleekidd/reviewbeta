@@ -12,6 +12,7 @@ const Detail: React.FC = () => {
   const [movie, setMovie] = useState<any>(null);
   const [reviews, setReviews] = useState<any[]>([]);
   const [categoryTitle, setCategoryTitle] = useState<string>("");
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -22,15 +23,15 @@ const Detail: React.FC = () => {
     const fetchItemAndReviews = async () => {
       try {
         const [itemResponse, reviewsResponse] = await Promise.all([
-          axios.get(`http://127.0.0.1:8000/api/items/${id}/`),
-          axios.get(`http://127.0.0.1:8000/api/items/${id}/reviews/`),
+          axios.get(`${apiUrl}/items/${id}/`),
+          axios.get(`${apiUrl}/items/${id}/reviews/`),
         ]);
         setMovie(itemResponse.data);
         setReviews(reviewsResponse.data);
 
         // Fetch category title
         const categoryId = itemResponse.data.category;
-        const categoryResponse = await axios.get(`http://127.0.0.1:8000/api/category-list/${categoryId}/`);
+        const categoryResponse = await axios.get(`${apiUrl}/category-list/${categoryId}/`);
         setCategoryTitle(categoryResponse.data.name);
       } catch (error) {
         console.error("Error fetching data:", error);

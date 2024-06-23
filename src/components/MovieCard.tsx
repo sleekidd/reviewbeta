@@ -21,11 +21,12 @@ interface Cast {
 const MovieCard: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [casts, setCasts] = useState<Cast[]>([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/items/");
+        const response = await axios.get(`${apiUrl}/items/`);
         setMovies(response.data);
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -34,7 +35,7 @@ const MovieCard: React.FC = () => {
 
     const fetchCasts = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/cast/");
+        const response = await axios.get(`${apiUrl}/api/cast/`);
         setCasts(response.data);
       } catch (error) {
         console.error("Error fetching casts:", error);
