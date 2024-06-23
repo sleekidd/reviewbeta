@@ -40,7 +40,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ movieId }) => {
 
   const fetchCSRFToken = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/csrf_token/");
+      const response = await axios.get(`${apiUrl}/csrf_token/`);
       const csrfToken = response.data.csrfToken;
       setCsrfToken(csrfToken);
     } catch (error) {
