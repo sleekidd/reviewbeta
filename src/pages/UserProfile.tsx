@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 interface UserData {
   id: number;
@@ -15,12 +17,13 @@ interface UserData {
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const storedToken = localStorage.getItem("token");
-        const response = await axios.get('http://127.0.0.1:8000/api/user-profile/', {
+        const response = await axios.get(`${apiUrl}/api/user-profile/`, {
           headers: {
             'Authorization': `Token ${storedToken}`,
           },
@@ -39,7 +42,17 @@ const UserProfile: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <h2><Skeleton width={200} /></h2>
+        <p><Skeleton width={150} /></p>
+        <p><Skeleton width={150} /></p>
+        <p><Skeleton width={100} /></p>
+        <p><Skeleton width={100} /></p>
+        <p><Skeleton width={100} /></p>
+        <Skeleton circle={true} height={100} width={100} />
+      </div>
+    );
   }
 
   return (

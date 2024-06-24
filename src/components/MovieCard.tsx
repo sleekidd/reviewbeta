@@ -26,7 +26,7 @@ const MovieCard: React.FC = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/items/`);
+        const response = await axios.get(`${apiUrl}/api/items/`);
         setMovies(response.data);
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -35,7 +35,7 @@ const MovieCard: React.FC = () => {
 
     const fetchCasts = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/cast/`);
+        const response = await axios.get(`${apiUrl}/api/cast/`);
         setCasts(response.data);
       } catch (error) {
         console.error("Error fetching casts:", error);

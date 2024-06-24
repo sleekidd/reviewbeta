@@ -23,8 +23,8 @@ const Detail: React.FC = () => {
     const fetchItemAndReviews = async () => {
       try {
         const [itemResponse, reviewsResponse] = await Promise.all([
-          axios.get(`${apiUrl}/items/${id}/`),
-          axios.get(`${apiUrl}/items/${id}/reviews/`),
+          axios.get(`${apiUrl}/api/items/${id}/`),
+          axios.get(`${apiUrl}/api/items/${id}/reviews/`),
         ]);
         setMovie(itemResponse.data);
         setReviews(reviewsResponse.data);
@@ -32,7 +32,7 @@ const Detail: React.FC = () => {
         // Fetch category title
         const categoryId = itemResponse.data.category;
         const categoryResponse = await axios.get(
-          `${apiUrl}/category-list/${categoryId}/`
+          `${apiUrl}/api/category-list/${categoryId}/`
         );
         setCategoryTitle(categoryResponse.data.name);
       } catch (error) {

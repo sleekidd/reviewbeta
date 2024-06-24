@@ -5,6 +5,7 @@ const CreateDirector: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string>('');
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const storedToken = localStorage.getItem('token');
 
@@ -25,7 +26,7 @@ const CreateDirector: React.FC = () => {
       }
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/create-director/',
+        `${apiUrl}/api/create-director/`,
         formData,
         {
           headers: {

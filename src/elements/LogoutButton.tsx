@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 const LogoutButton: React.FC = () => {
   const navigate = useNavigate(); 
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleLogout = async () => {
     try {
       const storedToken = localStorage.getItem("token");
 
       await axios.post(
-        'http://127.0.0.1:8000/api/logout/', 
+        `${apiUrl}/api/logout/`, 
         null, // No data to send in the request body
         {
           headers: {

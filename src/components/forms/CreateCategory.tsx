@@ -5,6 +5,7 @@ const CreateCategory: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const storedToken = localStorage.getItem('token');
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,7 +14,7 @@ const CreateCategory: React.FC = () => {
       formData.append('name', name);
       formData.append('image', image!);
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/create-category/',
+        `${apiUrl}/api/create-category/`,
         formData,
         {
           headers: {

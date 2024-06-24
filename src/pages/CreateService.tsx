@@ -4,6 +4,7 @@ import axios from 'axios';
 const CreateService: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const storedToken = localStorage.getItem('token');
 
@@ -14,7 +15,7 @@ const CreateService: React.FC = () => {
       formData.append('name', name);
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/create-service/',
+        `${apiUrl}/api/create-service/`,
         formData,
         {
           headers: {

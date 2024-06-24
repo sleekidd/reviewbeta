@@ -10,11 +10,12 @@ interface Category {
 const ListCategories: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const storedToken = localStorage.getItem('token'); // Retrieve token from localStorage
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get<Category[]>('http://127.0.0.1:8000/api/categories/', {
+        const response = await axios.get<Category[]>(`${apiUrl}/api/categories/`, {
           headers: {
             Authorization: `Token ${storedToken}`, // Include token in request headers
           },

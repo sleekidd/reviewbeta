@@ -4,11 +4,12 @@ import axios from 'axios';
 
 const CategoryList: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/category-list/');
+        const response = await axios.get(`${apiUrl}/api/category-list/`);
         setCategories(response.data.map((category: any) => category.name));
       } catch (error) {
         console.error('Error fetching categories:', error);

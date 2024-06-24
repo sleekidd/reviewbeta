@@ -26,7 +26,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ movieId }) => {
         throw new Error("Authorization token not found.");
       }
 
-      const response = await axios.get(`${apiUrl}/user-profile/`, {
+      const response = await axios.get(`${apiUrl}/api/user-profile/`, {
         headers: {
           Authorization: `Token ${storedToken}`,
         },
@@ -40,7 +40,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ movieId }) => {
 
   const fetchCSRFToken = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/csrf_token/`);
+      const response = await axios.get(`${apiUrl}/api/csrf_token/`);
       const csrfToken = response.data.csrfToken;
       setCsrfToken(csrfToken);
     } catch (error) {
@@ -86,7 +86,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ movieId }) => {
       }
 
       const response = await axios.post(
-        `${apiUrl}/items/${movieId}/reviews/create/`,
+        `${apiUrl}/api/items/${movieId}/reviews/create/`,
         {
           item: movieId,
           user: userId,

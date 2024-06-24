@@ -60,7 +60,7 @@ const RegistrationForm: React.FC = () => {
     }
     try {
       const response = await axios.post(
-        `${apiUrl}/register/`,
+        `${apiUrl}/api/register/`,
         formDataToSend,
         {
           headers: {

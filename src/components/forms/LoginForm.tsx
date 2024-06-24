@@ -15,7 +15,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${apiUrl}/login/`, {
+      const response = await axios.post(`${apiUrl}/api/login/`, {
         username: username,
         password: password,
       });

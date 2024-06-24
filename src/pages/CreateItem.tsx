@@ -52,12 +52,13 @@ const CreateItem: React.FC = () => {
   const [directors, setDirectors] = useState<Director[]>([]);
   const [error, setError] = useState<string>('');
   const storedToken = localStorage.getItem('token');
+  const apiUrl = import.meta.env.VITE_API_URL; 
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          'http://127.0.0.1:8000/api/category-list/'
+          `${apiUrl}/api/category-list/`
         );
         setCategories(response.data);
       } catch (error) {
@@ -70,7 +71,7 @@ const CreateItem: React.FC = () => {
   useEffect(() => {
     const fetchCasts = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/cast/');
+        const response = await axios.get(`${apiUrl}/api/cast/`);
         setCasts(response.data);
       } catch (error) {
         setError('Error fetching casts.');
@@ -82,7 +83,7 @@ const CreateItem: React.FC = () => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/genre/');
+        const response = await axios.get(`${apiUrl}/api/genre/`);
         setGenres(response.data);
       } catch (error) {
         setError('Error fetching genres.');
@@ -94,7 +95,7 @@ const CreateItem: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/service/');
+        const response = await axios.get(`${apiUrl}/api/service/`);
         setServices(response.data);
       } catch (error) {
         setError('Error fetching services.');
@@ -106,7 +107,7 @@ const CreateItem: React.FC = () => {
   useEffect(() => {
     const fetchDirectors = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/director/');
+        const response = await axios.get(`${apiUrl}/api/director/`);
         setDirectors(response.data);
       } catch (error) {
         setError('Error fetching directors.');
@@ -154,7 +155,7 @@ const CreateItem: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/create-item/',
+        `${apiUrl}/api/create-item/`,
         formData,
         {
           headers: {

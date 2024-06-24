@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface Category {
   title: string;
@@ -8,15 +10,13 @@ interface Category {
 
 const CategorySection: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          `${apiUrl}/category-list/`
-        );
-        // Assuming the response data is an array of category objects with 'name' and 'background_image' fields
+        const response = await axios.get(`${apiUrl}/api/category-list/`);
         const fetchedCategories = response.data.map((category: any) => ({
           title: category.name,
           image: category.background_image,
@@ -24,6 +24,8 @@ const CategorySection: React.FC = () => {
         setCategories(fetchedCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -42,22 +44,28 @@ const CategorySection: React.FC = () => {
       </div>
 
       <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 header-text">
-        {categories.map((category, index) => (
-          <div key={index} className="relative">
-            <div
-              className="bg-cover bg-center rounded-lg overflow-hidden"
-              style={{
-                backgroundImage: `url(${category.image})`,
-                height: "180px",
-              }}
-            ></div>
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 hover:bg-opacity-70 transition duration-300 rounded-[8px] h-[180px]">
-              <h2 className="text-white text-xl font-semibold tracking-[1px]">
-                {category.title}
-              </h2>
-            </div>
-          </div>
-        ))}
+        {loading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="relative">
+                <Skeleton height={180} className="rounded-lg" />
+              </div>
+            ))
+          : categories.map((category, index) => (
+              <div key={index} className="relative">
+                <div
+                  className="bg-cover bg-center rounded-lg overflow-hidden"
+                  style={{
+                    backgroundImage: `url(${category.image})`,
+                    height: "180px",
+                  }}
+                ></div>
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 hover:bg-opacity-70 transition duration-300 rounded-[8px] h-[180px]">
+                  <h2 className="text-white text-xl font-semibold tracking-[1px]">
+                    {category.title}
+                  </h2>
+                </div>
+              </div>
+            ))}
       </section>
       <div className="flex justify-center items-center mt-6">
         <button
