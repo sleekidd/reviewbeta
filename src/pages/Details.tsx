@@ -6,6 +6,8 @@ import StarRating from "../components/StarRating";
 import axios from "axios";
 import Footer from "../elements/Footer";
 import { format } from "date-fns";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Detail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -102,7 +104,33 @@ const Detail: React.FC = () => {
   }, [movie]);
 
   if (!movie) {
-    return <div>Loading...</div>; // Render loading indicator while data is being fetched
+    return (
+      <div className="body-text">
+        <Header />
+        <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 mt-[120px]">
+          <Skeleton height={40} width={300} />
+          <div className="my-6">
+            <Skeleton height={40} width={600} />
+            <Skeleton height={20} width={200} />
+            <div className="flex items-center mt-2">
+              <Skeleton height={20} width={100} />
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="w-full md:max-w-[800px]">
+              <Skeleton height={400} />
+              <div>
+                <Skeleton count={5} />
+              </div>
+            </div>
+            <div className="w-full md:max-w-[400px]">
+              <Skeleton count={3} height={200} />
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
   }
 
   return (

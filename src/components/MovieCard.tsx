@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import StarRating from "./StarRating";
 import { Link } from "react-router-dom";
 
@@ -7,7 +9,7 @@ interface Movie {
   id: number;
   image: string;
   title: string;
-  cast: number[]; // Change the type of cast to an array of numbers (IDs)
+  cast: number[];
   release_date: string;
   star_rating: number;
   total_reviews: number;
@@ -21,6 +23,7 @@ interface Cast {
 const MovieCard: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [casts, setCasts] = useState<Cast[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -44,9 +47,9 @@ const MovieCard: React.FC = () => {
 
     fetchMovies();
     fetchCasts();
+    setLoading(false);
   }, []);
 
-  // Function to get the names of the casts from their IDs
   const getCastNames = (castIds: number[]): string => {
     return castIds
       .map((castId) => {
@@ -55,11 +58,6 @@ const MovieCard: React.FC = () => {
       })
       .join(", ");
   };
-
-  // Render movies only if both movies and casts are available
-  if (movies.length === 0 || casts.length === 0) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -72,54 +70,40 @@ const MovieCard: React.FC = () => {
         </p>
       </div>
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 body-text">
-        {movies.map((movie) => (
-          <div
-            key={movie.id} // Ensure each movie has a unique key
-            className="max-w-[380px] rounded-[8px]"
-            style={{
-              border: "1px solid #f0f0f0",
-            }}
-          >
-            <Link to={`/details/${movie.id}/`}>
-              <div className="bg-white rounded-lg overflow-hidden">
-                <img
-                  src={movie.image}
-                  alt={movie.title}
-                  className="w-full h-40 object-cover object-center"
-                />
+        {loading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="max-w-[380px] rounded-[8px]" style={{ border: "1px solid #f0f0f0" }}>
+                <Skeleton height={180} className="rounded-lg" />
                 <div className="p-4 space-y-2">
-                  <h2 className="text-[18px] font-semibold">{movie.title}</h2>
-                  <p
-                    className="text-gray-500 text-[16px] font-medium"
-                    style={{
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    {/* Use getCastNames function to get the names of the casts */}
-                    {getCastNames(movie.cast)}
-                  </p>
-                  <p
-                    className="text-gray-500 text-[14px]"
-                    style={{
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    {movie.release_date}
-                  </p>
-                  <div className="flex items-center mt-2">
-                    <StarRating rating={movie.star_rating || 0} />
-                    <p className="text-gray-500 text-[14px] font-semibold px-2">
-                      {(movie.star_rating || 0).toFixed(1)} (
-                      {movie.total_reviews || 0} reviews)
-                    </p>
-                  </div>
+                  <Skeleton count={3} />
                 </div>
               </div>
-            </Link>
-          </div>
-        ))}
+            ))
+          : movies.map((movie) => (
+              <div key={movie.id} className="max-w-[380px] rounded-[8px]" style={{ border: "1px solid #f0f0f0" }}>
+                <Link to={`/details/${movie.id}/`}>
+                  <div className="bg-white rounded-lg overflow-hidden">
+                    <img src={movie.image} alt={movie.title} className="w-full h-40 object-cover object-center" />
+                    <div className="p-4 space-y-2">
+                      <h2 className="text-[18px] font-semibold">{movie.title}</h2>
+                      <p className="text-gray-500 text-[16px] font-medium" style={{ textTransform: "capitalize" }}>
+                        {getCastNames(movie.cast)}
+                      </p>
+                      <p className="text-gray-500 text-[14px]" style={{ letterSpacing: "1px" }}>
+                        {movie.release_date}
+                      </p>
+                      <div className="flex items-center mt-2">
+                        <StarRating rating={movie.star_rating || 0} />
+                        <p className="text-gray-500 text-[14px] font-semibold px-2">
+                          {(movie.star_rating || 0).toFixed(1)} ({movie.total_reviews || 0} reviews)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
       </section>
-
       <div className="flex justify-center items-center mt-6">
         <button
           type="button"
